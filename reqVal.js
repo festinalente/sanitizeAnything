@@ -37,4 +37,4 @@ const recursiveSanitation = (originalEl, customSanitationFn) => {
   return promise;
 };
 
-module.exports = { reqVal, recursiveSanitation };
+module.exports = { recursiveSanitation };
