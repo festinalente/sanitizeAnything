@@ -1,51 +1,26 @@
 /**
- * @function reqVal "request validation"
- * @param {!*} el, element to test, accepts any type.
- * @param {!string} the expected type (e.g. 'string', or 'boolean').
- * @param {!number} the expected maximum length.
- * @description This tests whether a parameter contains parentheses, is the correct
- * type and isn't over a certain lengh. It has basic validation for code ($, {}). It resolves a promise and simply strips code.
- * @todo possibly add a minimum length parameter to further
- */
-const reqVal = function (el, expectedType, expectedLength) {
-  const promise = new Promise((resolve, reject) => {
-    // content
-    try {
-      if (expectedType !== 'object') {
-        const regex = /\$|{|}|\([()]/g;
-        const rep = el.replace(regex, '');
-        resolve(rep);
-      }
-      // string
-      if (el.length > expectedLength) {
-        const err = new Error(`User input is longer than expected at ${el.toString()}`);
-        reject(err);
-      }
-      // typeof
-      if (typeof (el) !== expectedType) {
-        const err = new Error(`Argument ${el} must be a ${expectedType}`);
-        reject(err);
-      }
-    } catch (err) {
-      reject(err);
-    }
-  });
-  return promise;
-};
-
-/**
  * @function recursiveSanitation "recursive validation"
  * @param {!*} originalEl Takes anything
+ * @param {function=} customSanitationFn An optional function for
+ * sanitizing strings that takes a string, sanitizes it, then
+ * return the resulting string.
+ * @function customSanitationFn
+ * @param {string} string as a parameter for custom sanitation function.
  * @returns {promise} With any string sanitized for some characters.
- * @todo Add an option to pass one or more sanitation functions. 
+ * @todo Add an option to pass one or more sanitation functions.
  */
-const recursiveSanitation = (originalEl) => {
-  const promise = new Promise((resolve, reject) => {
+const recursiveSanitation = (originalEl, customSanitationFn) => {
+  // simple mongoDB sanitation default
+  const standardSanitation = customSanitationFn || function (string) {
     const regex = /\$|{|}|==|===|\([()]/g;
+    return string.replace(regex, '').trim();
+  };
+
+  const promise = new Promise((resolve, reject) => {
     function sanitize (original) {
       let clone = structuredClone(original);
       if (typeof clone === 'string') {
-        clone = original.replace(regex, '').trim();
+        clone = standardSanitation(original);
       } else if (clone instanceof Array) {
         for (let i = 0; i < clone.length; i++) {
           clone[i] = sanitize(clone[i]);

@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/festinalente/objectValidator.git"
+    "url": "git+https://github.com/festinalente/sanitizeAnything.git"
   },
   "keywords": [
     "object",
@@ -19,7 +19,7 @@
   "author": "Tomás Eduardo Swift-Metcalfe",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/festinalente/objectValidator/issues"
+    "url": "https://github.com/festinalente/sanitizeAnything/issues"
   },
-  "homepage": "https://github.com/festinalente/objectValidator#readme"
+  "homepage": "https://github.com/festinalente/sanitizeAnything#readme"
 }

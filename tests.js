@@ -42,6 +42,27 @@ const testFullObjectCorrect = {
   topLevelBoolean: true
 };
 
+const testCustomFunction = {
+  objectLeaks: { test: 'object leak' },
+  arrayOfNumbers: [0, 1, 2, 3],
+  arrayOfStrings: ['a', 'b', 'c', 'd'],
+  extraArray: ['is the error in arrays?'],
+  another: [0],
+  arrayOfObjects: [
+    { string: 'a', number: 1, array: ['rope in nested'] },
+    { string: 'b', number: 2, array: ['rope in nested 1'] }],
+  topLevelvalidated: {
+    string: 'rope in Object',
+    number: 1,
+    arrayOfLengthOne: ['arrayOfLengthOneContent'],
+    arrayTest: [{ nested: '${ropeInObjectInArrayInObject} ===!'}, 'abc', 1000],
+    boolean: true
+  },
+  topLevelString: 'top level rope',
+  topLevelNumber: 1,
+  topLevelBoolean: true
+};
+
 // N.b. I'm not a hacker, other tests might be required:
 const testSanitation = {
   testString: '{ $where: function() { return (this.entity == “Milk”) }}'
@@ -89,5 +110,13 @@ describe ('Test request validator', async () => {
     const validated = await reqVal.recursiveSanitation(testFullObject);
     assert.deepEqual(testFullObjectCorrect, validated);
   });
-  
+
+  it (`Tests passing a custom sanitation function`, async () => {
+    const customSanitationFn = function (string) {
+      const regex = /string/g;
+      return string.replace(regex, 'rope').trim();
+    };
+    const validated = await reqVal.recursiveSanitation(testFullObject, customSanitationFn);
+    assert.deepEqual(testCustomFunction, validated);
+  });
 });
