@@ -1,6 +1,6 @@
 {
   "name": "any_object_validator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A small module that checks any data type: Object, Array, String, Boolean, Number and tests it against a validation function. It works recursively on Arrays and Objects to any depth.",
   "main": "reqVal.js",
   "scripts": {
@@ -16,6 +16,10 @@
     "JavaScript",
     "MongoDB"
   ],
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": " >= 17.0.0"
+  },
   "author": "Tomás Eduardo Swift-Metcalfe",
   "license": "GPL-3.0-or-later",
   "bugs": {
